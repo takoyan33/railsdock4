@@ -1,0 +1,23 @@
+<div class="d-flex align-items-center mt-4 mb-4">
+  <div class="ml-auto boards__linkBox">
+    <%= link_to '一覧', boards_path, class: 'btn btn-outline-dark' %>
+    <%= link_to '編集', edit_board_path(@board), class: 'btn btn-outline-dark' %>
+  </div>
+</div>
+
+<% if flash[:notice] %>
+  <div class="alert alert-primary"><%= flash[:notice] %></div>
+<% end %>
+<%= render @board %>
+
+<% if @current_user %>
+<div class="p-comment__list">
+  <div class="p-comment__listTitle">コメント</div>
+  <%= render @board.comments %>
+</div>
+<%= render partial: 'comments/form', locals: { comment: @comment } %>
+<% else %>
+<div class="p-comment__list">
+  <div class="p-comment__listTitle">コメントはログインするとできるようになります。</div>
+</div>
+<% end %>

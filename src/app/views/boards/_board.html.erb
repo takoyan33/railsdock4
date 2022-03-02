@@ -1,0 +1,19 @@
+<div class="card">
+  <div class="card-header">
+    <h4><%= board.title %></h4>
+    <% board.tags.each do |tag| %>
+      <span class="badge badge-primary"><%= tag.name %></span>
+      <% link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <p class="card-text"><%= simple_format(board.body) %></p>
+    <p><%= image_tag board.image, class: "width-max" if board.image.attached? %></p>
+    <p class="text-right font-weight-bold mr-10"><%= board.name %></p>
+    <p><%= link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %></p>
+    <p><%= link_to 'プロフィールはこちら', board, class: 'btn btn-outline-dark', method: :delete %></p>
+    <br>
+        <p class="card-text">更新日　<%= board.updated_at.to_s(:datetime_jp) %></p>
+    <p class="card-text">公開日　<%= board.created_at.to_s(:datetime_jp) %></p>
+  </div>
+</div>
