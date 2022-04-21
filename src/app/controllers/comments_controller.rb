@@ -3,14 +3,17 @@ class CommentsController < ApplicationController
     # comment = Comment.new(comment_params)
     @user = current_user
     comment = @user.comments.build(comment_params)
-    if comment.save
+    comment.name = @user.name
+    # comment = @user.comments.new(comment_params)
+    if comment.save!
       flash[:notice] = 'コメントを投稿しました'
       redirect_to comment.board
     else
-      redirect_to :back, flash: {
-        comment: comment,
-        error_messages: comment.errors.full_messages
-      }
+      redirect_back(fallback_location: root_path)
+      # , flash: {
+      #   comment: comment,
+      #   error_messages: comment.errors.full_messages
+      # }
     end
   end
 

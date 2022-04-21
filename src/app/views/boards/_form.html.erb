@@ -5,10 +5,6 @@
     <%= f.text_field :title, class: 'form-control' %>
   </div>
   <div class="form-group">
-    <%= f.label :name, '名前' %>
-    <%= f.text_field :name, class: 'form-control' %>
-  </div>
-  <div class="form-group">
     <%= f.label :body, '本文' %>
     <%= f.text_area :body, class: 'form-control', rows: 10 %>
   </div>
@@ -17,6 +13,7 @@
   </span>
     <div class="form-group">
     <span>タグ</span>
+    <span>※一度につけられるタグは１つまでです。 </span>
     <%= f.collection_check_boxes(:tag_ids, Tag.all, :id, :name) do |tag| %>
       <div class="form-check">
         <%= tag.label class: 'form-check-label' do %>

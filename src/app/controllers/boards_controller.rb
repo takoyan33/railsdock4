@@ -14,12 +14,10 @@ class BoardsController < ApplicationController
     @board = Board.new(flash[:board])
   end
 
-  # def create
-  #   Board.create(board_params)
-  # end
-
   def create
-    board = Board.new(board_params)
+    @user = current_user
+    # board = Board.new(board_params)
+    board = @user.boards.build(board_params)
     board.image.attach(params[:board][:image])
     if board.save
       flash[:notice] = "「#{board.title}」の掲示板を作成しました"
@@ -34,6 +32,8 @@ class BoardsController < ApplicationController
 
   def show
     @comment = Comment.new(board_id: @board.id)
+    @user = User.find(@board.user_id)
+    @like = Like.new
   end
 
   def edit

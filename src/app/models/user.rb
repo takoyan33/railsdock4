@@ -19,6 +19,12 @@ class User < ApplicationRecord
   has_secure_password
   has_many :boards, dependent: :destroy
   has_many :comments, dependent: :destroy
+  has_many :likes, dependent: :destroy
+  has_many :liked_boards, through: :likes, source: :post
+
+  def already_liked?(board)
+    self.likes.exists?(board_id: board.id)
+  end
 
   validates :name,
     presence: true,
@@ -30,9 +36,8 @@ class User < ApplicationRecord
     # }
   validates :password,
     length: {minimum: 8 }
-
-  def age
-    now = Time.zone.now
-    (now.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10000
-  end
+  # def age
+  #   now = Time.zone.now
+  #   (now.strftime('%Y%m%d').to_i - birthday.strftime('%Y%m%d').to_i) / 10000
+  # end
 end

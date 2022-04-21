@@ -1,8 +1,9 @@
 <h1>マイページ</h1>
-<p>id <%= @current_user.id %></p>
+
+<p>ここでは、プロフィールの設定や確認を行えます。</p>
+
 <p>名前　<%= @current_user.name %></p>
 <p>学部学科　<%= @current_user.faculty %></p>
 <p>プロフィール</p>
 <p><%= @current_user.profile %></p>
 <p><%= link_to 'プロフィール編集', user_edit_path, class:"btn btn-outline-dark" %></p>
-

@@ -11,7 +11,11 @@
                       }
       %>
       <% end %>
+    <% if @current_user %>
     <%= link_to '新しく投稿する', new_board_path, class:"btn btn-outline-dark" %>
+    <% else %>
+    <p>投稿機能はログインしてからできます。</p>
+    <% end %>
   </div>
 </div>
 <p>北星掲示板では、大学生活についての悩みを書き込めます</p>
@@ -32,7 +36,7 @@
       <th>タイトル</th>
       <%# <th>作成者</th> %>
       <th>作成日時</th>
-      <th>タグ数</th>
+      <th>タグ</th>
       <th>コメント数</th>
       <th></th>
     </tr>
@@ -42,8 +46,10 @@
       <tr>
         <td><%= board.title %></td>
         <br class="d-lg-none">
-        <td><%= board.created_at.to_s(:date_jp) %></td>
-        <td><%= board.tags.count %></td>
+        <td><%= board.created_at.to_s(:datetime_jp) %></td>
+        <% board.tags.each do |tag| %>
+        <td><%= tag.name %><br></td>
+        <% end %>
         <td><%= board.comments.count %></td>
         <td><%= link_to '詳細', board, class: 'btn btn-outline-dark' %></td>
       </tr>
@@ -53,3 +59,4 @@
 </table>
 
 <%= paginate @boards %>
+

@@ -11,9 +11,13 @@
     <p><%= image_tag board.image, class: "width-max" if board.image.attached? %></p>
     <p class="text-right font-weight-bold mr-10"><%= board.name %></p>
     <p><%= link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %></p>
-    <p><%= link_to 'プロフィールはこちら', board, class: 'btn btn-outline-dark', method: :delete %></p>
+    <p>投稿者名　<%= @board.user.name %> </p>
+    <p><%= link_to '投稿者のプロフィールはこちら', user_path(@user), class: 'btn btn-outline-dark' %></p>
     <br>
         <p class="card-text">更新日　<%= board.updated_at.to_s(:datetime_jp) %></p>
     <p class="card-text">公開日　<%= board.created_at.to_s(:datetime_jp) %></p>
+
+
+    
   </div>
 </div>
