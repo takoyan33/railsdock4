@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_04_18_221540) do
+ActiveRecord::Schema.define(version: 2022_04_28_064528) do
 
   create_table "active_storage_attachments", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -94,6 +94,7 @@ ActiveRecord::Schema.define(version: 2022_04_18_221540) do
     t.date "birthday"
     t.string "faculty", limit: 255
     t.string "profile", limit: 255
+    t.string "image"
     t.index ["name"], name: "index_users_on_name", unique: true
   end
 

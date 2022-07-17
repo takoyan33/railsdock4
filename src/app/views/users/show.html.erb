@@ -1,6 +1,14 @@
 
 <h1>他のユーザー</h1>
 
+<% if @user.image? %>
+  <%= image_tag @user.image.url, style:" width: 200px; height: 200px; object-fit: cover";  %>
+<% else %>
+  <%= image_tag "noimage.png", style:" width: 200px; height: 200px; object-fit: cover";  %>
+<% end %>
+<br />
+<br />
+<br />
 <p>名前　<%= @user.name %></p>
 <p>学部学科　<%= @user.faculty %></p>
 <p>プロフィール</p>

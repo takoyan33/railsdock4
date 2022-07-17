@@ -12,23 +12,13 @@
 
 <% if @current_user %>
 <div class="p-comment__list">
-  <div class="p-comment__listTitle">コメント　<%= @board.comments.count %>件</div>
+  <div class="p-comment__listTitle"><i class="fa fa-commenting-o" aria-hidden="true"></i>コメント　<%= @board.comments.count %>件</div>
   <%= render @board.comments %>
 </div>
 <%= render partial: 'comments/form', locals: { comment: @comment } %>
 <% else %>
 <div class="p-comment__list">
-  <div class="p-comment__listTitle">コメントはログインするとできるようになります。</div>
+  <div class="p-comment__listTitle"><i class="fa fa-commenting-o" aria-hidden="true"></i>コメントはログインするとできるようになります。</div>
 </div>
 <% end %>
 
-<h3>いいね件数: <%= @board.likes.count %></h3>
-<% if @current_user.already_liked?(@board) %>
-  <%= button_to 'いいねを取り消す', board_like_path(@board), method: :delete %>
-<% else %>
-  <%= button_to 'いいね', board_likes_path(@board) %>
-<% end %>
-<h2>いいねしたユーザー</h2>
-<%# @board.liked_users.each do |user| %>
-  <li><%#= user.email %></li>
-<%# end %>

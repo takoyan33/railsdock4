@@ -18,7 +18,9 @@ class ContactsController < ApplicationController
         render :action => 'index'
       else
         ContactMailer.send_mail(@contact).deliver_now
+        #自分用のメール
         ContactMailer.send_mail_client(@contact).deliver_now
+        #相手用のメール
         render :action => 'done'
       end
     end

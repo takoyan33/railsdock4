@@ -1,7 +1,15 @@
 <div class="p-comment__item">
   <p><%= simple_format(comment.comment) %></p>
+  <!--simple_formatは、文字列を<p>で括るなどを行う -->
   <div class="p-comment__bottomLine">
+    <% if @board.user.image? %>
+    <%= image_tag @board.user.image.url, class:"img-thumbnail", style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"  %>
+    <% else %>
+    <%= image_tag "noimage.png", class:"img-thumbnail" , style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"%>
+    <% end %>
+  <%= link_to user_path(comment.user_id) do %>
     <span><%= comment.name %></span>
+   <% end %> 
     <span><%= comment.created_at.to_s(:datetime_jp) %></span>
     <span><%= link_to '削除', comment, method: :delete, data: { confirm: '削除してもよろしいですか？' } %></span>
   </div>

@@ -7,6 +7,7 @@ class UsersController < ApplicationController
     user = User.new(user_params)
     if user.save!
       session[:user_id] = user.id
+      #セッションにuse.id入れる
       redirect_to mypage_path
     else
       flash[:user] = user
@@ -16,10 +17,17 @@ class UsersController < ApplicationController
   end
 
   def me
+    #自分のプロフィールページ
+  @user = @current_user
   end
 
   def show
   @user = User.find(params[:id])
+  if @user == @current_user
+    redirect_to :action => 'me'
+    #もしusers詳細ページがcurrent_userならmeページにリダイレクトする
+  else
+  end
   end
 
   def edit
@@ -39,6 +47,6 @@ class UsersController < ApplicationController
   private
 
   def user_params
-    params.require(:user).permit(:name, :password, :password_confirmation, :faculty, :profile)
+    params.require(:user).permit(:name, :password, :password_confirmation, :faculty, :profile, :image)
   end
 end

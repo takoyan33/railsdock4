@@ -2,8 +2,15 @@
 
 <p>北星学園大学掲示板では、北星学園大学で悩んでいることや聞きたいことについて気軽に質問することができます。</p>
 
+<%= line_chart @data %>
 
+<%= react_component('HelloMessage', name: 'Mike') %>
+
+
+<% if @current_user %>
+<%= link_to '掲示板はこちら', boards_path, class: 'btn btn-primary'  %>
+<% else %>
 <%= render partial: 'users/login_form' %>
-
 <br>
 <%= link_to '新規登録はこちら', new_user_path, class: 'btn btn-primary'  %>
+<% end %>

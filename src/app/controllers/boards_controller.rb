@@ -1,13 +1,28 @@
 class BoardsController < ApplicationController
   before_action :set_target_board, only: %i[show edit update destroy]
+  #このアクションのみ
 
   def index
-    @boards = params[:tag_id].present? ? Tag.find(params[:tag_id]).boards : Board.all.order(id: "DESC") 
-    @boards = @boards.page(params[:page])
-    @boards_count = Board.all.count
+    #タグ検索
+    @q = Board.ransack(params[:q])
+    if params[:tag_id].present?
+    #タグ検索の処理
+    @boards = params[:tag_id].present? ? Tag.find(params[:tag_id]).boards : Board.all
+    @boards = @boards.page(params[:page]).per(8)
+    else
+    #キーワード検索
+    @boards = @q.result(distinct: true).page(params[:page]).per(8)
+    .all.order(id: "DESC")
+    end
+
+    @boards_count = Board.all.count 
+    #掲示板の合計数
     @today_count = Board.created_today.count
-    @lastmonth_count = Board.created_last_month.count
-    @month_count = Board.created_month.count
+    #今日投稿された掲示板の数
+    @lastmonth_count = Board.created_last_month.coun
+    #先月投稿された掲示板の数
+    @month_count = Board.created_month.count 
+    #今月投稿された掲示板の数
   end
 
   def new
@@ -18,7 +33,9 @@ class BoardsController < ApplicationController
     @user = current_user
     # board = Board.new(board_params)
     board = @user.boards.build(board_params)
+    #userを紐付け
     board.image.attach(params[:board][:image])
+    #画像投稿処理
     if board.save
       flash[:notice] = "「#{board.title}」の掲示板を作成しました"
       redirect_to board

@@ -15,3 +15,7 @@
 //= require bootstrap-sprockets
 //= require jquery_ujs
 //= require bootstrap
+//= require chartkick
+//= require Chart.bundle
+
+import HelloMessage from "./components/Hello";

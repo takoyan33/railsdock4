@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
+  #CSRF対策(Webサイトの脆弱性をつくようなサイバー攻撃)
   before_action :current_user
 
   def about

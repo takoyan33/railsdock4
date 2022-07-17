@@ -2,8 +2,30 @@
 
 <p>ここでは、プロフィールの設定や確認を行えます。</p>
 
+<% if @current_user.image? %>
+  <%= image_tag @current_user.image.url, style:" width: 200px; height: 200px; object-fit: cover; " %>
+<% else %>
+  <%= image_tag "noimage.png", style:" width: 200px; height: 200px; object-fit: cover; " %>
+<% end %>
+
 <p>名前　<%= @current_user.name %></p>
 <p>学部学科　<%= @current_user.faculty %></p>
 <p>プロフィール</p>
 <p><%= @current_user.profile %></p>
 <p><%= link_to 'プロフィール編集', user_edit_path, class:"btn btn-outline-dark" %></p>
+
+
+<h5>いいねしている投稿　<%=  @current_user.liked_boards.count %>件</h5>
+
+<br />
+ーーーーーーーーーーーーーーー
+<% @current_user.liked_boards.each do |board| %>
+  <br />
+  投稿タイトル：<%= board.title %>
+  <br />
+  投稿者名：<%= board.user.name %>
+  <br />
+  投稿本文：<%= board.body %>
+  <br />
+ーーーーーーーーーーーーーーー
+<% end %>

@@ -15,8 +15,10 @@ class Board < ApplicationRecord
   has_many :tags, through: :board_tag_relations
   has_one_attached :image
   belongs_to :user , optional: true
+
   has_many :likes, dependent: :destroy
   has_many :liked_users, through: :likes, source: :user
+  #投稿が誰にいいねされているのかを簡単に取得
 
   # validates :name, length: { maximum: 10 }
   validates :title, presence: true, length: { maximum: 30 }

@@ -3,21 +3,50 @@
     <h4><%= board.title %></h4>
     <% board.tags.each do |tag| %>
       <span class="badge badge-primary"><%= tag.name %></span>
-      <% link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %>
+      <%# link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %>
     <% end %>
   </div>
   <div class="card-body">
     <p class="card-text"><%= simple_format(board.body) %></p>
     <p><%= image_tag board.image, class: "width-max" if board.image.attached? %></p>
     <p class="text-right font-weight-bold mr-10"><%= board.name %></p>
+<% if @current_user == board.user %>
     <p><%= link_to '削除', board, class: 'btn btn-outline-dark', method: :delete %></p>
+<% else %>
+
+<% end %>
+    <br />
+    <br />
+      <% if board.user.image? %>
+      <%= image_tag board.user.image.url, class:"img-thumbnail", style:" width: 100px; height: 100px; object-fit: cover; border-radius: 50%;" %>
+      <% else %>
+      <%= image_tag "noimage.png", class:"img-thumbnail", style:" width: 100px; height: 100px; object-fit: cover; border-radius: 50%;"; %>
+      <% end %>
     <p>投稿者名　<%= @board.user.name %> </p>
-    <p><%= link_to '投稿者のプロフィールはこちら', user_path(@user), class: 'btn btn-outline-dark' %></p>
-    <br>
-        <p class="card-text">更新日　<%= board.updated_at.to_s(:datetime_jp) %></p>
-    <p class="card-text">公開日　<%= board.created_at.to_s(:datetime_jp) %></p>
+    <p><%= link_to '投稿者のプロフィール', user_path(board.user_id), class: 'btn btn-outline-dark' %></p>
+<p><i class="fa fa-heart" aria-hidden="true"></i>　いいね数: <%= @board.likes.count %></h3>
+<% if @current_user %>
+<% if @current_user.already_liked?(@board) %>
+  <%= button_to 'いいねを取り消す', board_like_path(@board), method: :delete %>
+<% else %>
+  <%= button_to 'いいね', board_likes_path(@board) %>
+<% end %>
+<% else %>
+<p>ログインするといいねできます。</p>
+<% end %>
+<p>いいねしたユーザー</p>
 
-
+<% @board.liked_users.each do |user| %>
+        <li><% if user.image? %>
+      <%= image_tag user.image.url, class:"img-thumbnail", style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;" %>
+      <% else %>
+      <%= image_tag "noimage.png", class:"img-thumbnail", style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"; %>
+      <% end %>
+<%= user.name %></li>
+<% end %>
+<br>
+        <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i>　更新日　<%= board.updated_at.to_s(:datetime_jp) %></p>
+    <p class="card-text"><i class="fa fa-clock-o" aria-hidden="true"></i>　公開日　<%= board.created_at.to_s(:datetime_jp) %></p>
     
   </div>
 </div>

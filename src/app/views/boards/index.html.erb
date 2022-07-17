@@ -1,4 +1,17 @@
-<div class="d-flex align-items-center">
+ <!-- タブ切り替え -->
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <a href="#photo1" class="nav-link  <% if params[:q].present? %>active<% end %>" data-bs-toggle="tab">タグで調べる</a>
+        </li>
+        <li class="nav-item">
+          <a href="#photo2" class="nav-link  <% if params[:q].present? %>active<% end %>" data-bs-toggle="tab">キーワード検索</a>
+        </li>
+      </ul>
+
+      <!-- 掲示板 -->
+      <div class="tab-content">
+        <div id="photo1" class="tab-pane active">
+          <div class="d-lg-flex align-items-center">
   <h1>北星掲示板一覧</h1>
   <div class="ml-auto boards__linkBox">
       <%= form_with url: boards_path, method: :get, class: 'boards__searchForm' do %>
@@ -23,40 +36,85 @@
   <div class="alert alert-danger"><%= flash[:notice] %></div>
 <% end %>
 <ul>
-<li>全投稿数　　　全<%= @boards_count %>件</li>
-<li>今日の投稿数　全<%= @today_count %>件</li>
-<li>今月の投稿数　全<%= @month_count %>件</li>
-<li>先月の投稿数　全<%= @lastmonth_count %>件</li>
+<li>投稿数　全<%= @boards_count %>件</li>
 </ul>
-<p>並び替え 古い順　新しい順</p>
-<table class="table table-hover boards__table">
-  <thead class="thead-dark">
-    <tr>
-      <%# <th>ID</th> %>
-      <th>タイトル</th>
-      <%# <th>作成者</th> %>
-      <th>作成日時</th>
-      <th>タグ</th>
-      <th>コメント数</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @boards.each do |board| %>
-      <tr>
-        <td><%= board.title %></td>
-        <br class="d-lg-none">
-        <td><%= board.created_at.to_s(:datetime_jp) %></td>
-        <% board.tags.each do |tag| %>
-        <td><%= tag.name %><br></td>
-        <% end %>
-        <td><%= board.comments.count %></td>
-        <td><%= link_to '詳細', board, class: 'btn btn-outline-dark' %></td>
-      </tr>
-    <% end %>
+<%# <p>並び替え 古い順　新しい順　いいねが多い順　コメントが多い順</p> %>
 
-  </tbody>
-</table>
+<div class="row">
+    <% @boards.each do |board| %>
+      <div class="col-sm-6">
+        <div class="card">
+        <%= link_to board_path(board), style: "width:100%; height:100%; display:block;"  do %>
+        <h5  class="card-title"><%= board.title %></h5>
+        <br class="d-lg-none">
+        <% board.tags.each do |tag| %>
+        <li class="badge badge-primary"><%= tag.name %><br></li> 
+        <% end %>
+      <p class="card-text"><i class="fa fa-commenting-o" aria-hidden="true"></i>　<%= board.comments.count %>　<i class="fa fa-heart" aria-hidden="true"></i>　<%= board.likes.count %></p> 
+     <p  class="card-text"> <% if board.user.image? %>
+      <%= image_tag board.user.image.url, class:"img-thumbnail", style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"  %>
+      <% else %>
+      <%= image_tag "noimage.png", class:"img-thumbnail" , style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"%>
+      <% end %>
+      <%= board.user.name %>　<i class="fa fa-clock-o" aria-hidden="true"></i><%= board.created_at.to_s(:datetime_jp) %></p>
+        <% end %>
+    </div>
+</div>
+    <% end %>
+</div>
 
 <%= paginate @boards %>
+                  </div>
+        <div id="photo2" class="tab-pane">
+        <div class="d-lg-flex align-items-center">
+  <h1>北星掲示板一覧</h1>
+
+  
+  <div class="ml-auto boards__linkBox">
+    <% if @current_user %>
+    <%= link_to '新しく投稿する', new_board_path, class:"btn btn-outline-dark" %>
+    <% else %>
+    <p>投稿機能はログインしてからできます。</p>
+    <% end %>
+  </div>
+    <%= search_form_for @q do |f| %>
+        <%= f.search_field :title_cont %>
+        <%= f.submit %>
+    <% end %>
+</div>
+<p>北星掲示板では、大学生活についての悩みを書き込めます</p>
+<% if flash[:notice] %>
+  <div class="alert alert-danger"><%= flash[:notice] %></div>
+<% end %>
+<ul>
+<li>投稿数　全<%= @boards_count %>件</li>
+</ul>
+<%# <p>並び替え 古い順　新しい順　いいねが多い順　コメントが多い順</p> %>
+
+<div class="row">
+    <% @boards.each do |board| %>
+      <div class="col-sm-6">
+        <div class="card">
+        <%= link_to board_path(board), style: "width:100%; height:100%; display:block;"  do %>
+        <h5  class="card-title"><%= board.title %></h5>
+        <br class="d-lg-none">
+        <% board.tags.each do |tag| %>
+        <li class="badge badge-primary"><%= tag.name %><br></li> 
+        <% end %>
+      <p class="card-text"><i class="fa fa-commenting-o" aria-hidden="true"></i>　<%= board.comments.count %>　<i class="fa fa-heart" aria-hidden="true"></i>　<%= board.likes.count %></p> 
+     <p  class="card-text"> <% if board.user.image? %>
+      <%= image_tag board.user.image.url, class:"img-thumbnail", style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"  %>
+      <% else %>
+      <%= image_tag "noimage.png", class:"img-thumbnail" , style:" width: 50px; height: 50px; object-fit: cover; border-radius: 50%;"%>
+      <% end %>
+      <%= board.user.name %>　<i class="fa fa-clock-o" aria-hidden="true"></i><%= board.created_at.to_s(:datetime_jp) %></p>
+        <% end %>
+    </div>
+</div>
+    <% end %>
+</div>
+
+<%= paginate @boards %>
+        </div>
+      </div>
 

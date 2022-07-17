@@ -1,10 +1,10 @@
 class CommentsController < ApplicationController
   def create
-    # comment = Comment.new(comment_params)
+    #コメント作成
     @user = current_user
     comment = @user.comments.build(comment_params)
+    #userの紐付けて投稿
     comment.name = @user.name
-    # comment = @user.comments.new(comment_params)
     if comment.save!
       flash[:notice] = 'コメントを投稿しました'
       redirect_to comment.board
@@ -18,6 +18,7 @@ class CommentsController < ApplicationController
   end
 
   def destroy
+     #コメント削除
     comment = Comment.find(params[:id])
     comment.delete
     redirect_to comment.board, flash: {notice: 'コメントが削除されました'}
